@@ -9,6 +9,7 @@
   "scripts": {
     "start": "node src/server.js",
     "simulate": "node src/runSimulationReport.js",
+    "live:evaluate": "node src/runLiveOpenAiEvaluation.js",
     "export:rag": "node src/aihubRagExport.js",
     "evaluate:rag": "node src/runAihubRagEvaluation.js",
     "package:usb": "node src/privateRuntimePackage.js",

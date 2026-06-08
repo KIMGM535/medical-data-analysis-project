@@ -370,8 +370,14 @@ export async function createCounselingTurn({
     }, { messages, aihubRagContext: resolvedAihubRagContext });
   }
 
+  const preferRuleBasedSensitiveTurn = shouldPreferRuleBasedSensitiveTurn({
+    latestUserText,
+    recentSexualAssault,
+    recentPassiveDeathWish,
+    recentManicActivation,
+  });
   const llmRagContext = allowPrivateRagInLlmPrompt ? resolvedAihubRagContext : publicRagEvidence(resolvedAihubRagContext);
-  const llmResult = llmClient
+  const llmResult = llmClient && !preferRuleBasedSensitiveTurn
     ? await llmClient(
         buildLlmPrompt({
           messages,
@@ -2617,6 +2623,21 @@ function isRelationshipRupture(latestUserText, messages) {
   if (!hasAssistantHistory) return false;
 
   return /뭔\s*소리|뭔소리|아니[, ]|그게\s*아니|아닌데|틀렸|개소리|시발|씨발|짜증|좆|꺼져|너\s*같은|내\s*잘못/i.test(latestUserText);
+}
+
+function shouldPreferRuleBasedSensitiveTurn({
+  latestUserText = '',
+  recentSexualAssault = false,
+  recentPassiveDeathWish = false,
+  recentManicActivation = false,
+} = {}) {
+  const sexualAssaultCare =
+    isSexualAssaultDisclosureText(latestUserText)
+    || (recentSexualAssault && /내가\s*잘못|내\s*잘못|죄책감|미안|망가진|이상한|정상.*(아니|아닌)|더럽|오염/i.test(latestUserText));
+  const passiveDeathWishCare = isPassiveDeathWishText(latestUserText) || recentPassiveDeathWish;
+  const manicActivationCare = isManicActivationText(latestUserText) || (recentManicActivation && isManicActivationFollowUpText(latestUserText));
+
+  return sexualAssaultCare || passiveDeathWishCare || manicActivationCare;
 }
 
 function buildRepairTurn({ latestUserText, messages }) {

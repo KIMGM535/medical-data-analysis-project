@@ -61,6 +61,9 @@ test('local USB demo guide documents copy-based private index handoff', () => {
 
   assert.match(guide, /USB는 실행 매체가 아니라 파일 전달 매체/);
   assert.match(guide, /app_data\/aihub-rag-index\.deploy\.json/);
+  assert.match(guide, /https:\/\/nodejs\.org\/en\/download/);
+  assert.match(guide, /https:\/\/platform\.openai\.com\/api-keys/);
   assert.match(guide, /http:\/\/localhost:5173/);
+  assert.match(guide, /Ctrl\+C/);
   assert.doesNotMatch(guide, /sk-[A-Za-z0-9]/);
 });

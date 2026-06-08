@@ -23,6 +23,18 @@ GitHub 공개 코드 다운로드
 
 ## 1. GitHub에서 코드 받기
 
+먼저 발표 PC에 Node.js 20 이상이 필요합니다. Windows에서는 공식 다운로드 페이지에서 Windows Installer를 설치합니다.
+
+```text
+https://nodejs.org/en/download
+```
+
+설치 후 PowerShell을 새로 열고 아래 명령으로 확인합니다.
+
+```bash
+node -v
+```
+
 대상 PC에서 Git이 가능하면 다음 명령을 사용합니다.
 
 ```bash
@@ -53,6 +65,12 @@ medical-data-analysis-project/
 ## 3. `.env` 작성
 
 프로젝트 폴더에 `.env` 파일을 만들고 아래 내용을 넣습니다.
+
+OpenAI API key는 아래 페이지에서 발급한 값을 사용합니다.
+
+```text
+https://platform.openai.com/api-keys
+```
 
 ```env
 OPENAI_API_KEY=<OPENAI_API_KEY>
@@ -100,6 +118,8 @@ Psychological Counseling AI running at http://127.0.0.1:5173
 ```text
 http://localhost:5173
 ```
+
+서버를 종료하려면 터미널 또는 PowerShell에서 `Ctrl+C`를 누릅니다. Windows에서 `Terminate batch job (Y/N)?`가 나오면 `Y`를 입력하고 Enter를 누릅니다.
 
 ## 6. 발표/테스트 후 삭제
 

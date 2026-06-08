@@ -86,7 +86,7 @@ export function classifyDialogueAct({ latestUserText = '', messages = [] } = {})
 }
 
 function looksLikeQuestion(text) {
-  return /[?？]|나요|까요|있나요|무엇인가요|어떤가요|말해줄 수 있나요|뭐였나요|어디에 가깝나요/i.test(text);
+  return /[?？]|나요|까요|있나요|있는지|혼자인지|연락할 사람이|무엇인가요|어떤가요|말해줄 수 있나요|뭐였나요|어디에 가깝나요/i.test(text);
 }
 
 function lastQuestionText(text) {
@@ -103,7 +103,7 @@ function questionTarget(text) {
   if (/슬픔|분노|죄책감|멍함|압박감|지침|무력감/i.test(text)) return 'emotion_choice';
   if (/언제부터|기간|이어졌/i.test(text)) return 'duration';
   if (/하루 생활|일상|관계|영향/i.test(text)) return 'functional_impact';
-  if (/덜 혼자|혼자가 아니라|도움|사람/i.test(text)) return 'support';
+  if (/덜 혼자|혼자가 아니라|혼자인지|연락할 사람|연락할 수 있는 사람|도움|사람/i.test(text)) return 'support';
   if (/거슬렸|틀렸|잘못/i.test(text)) return 'rupture_feedback';
   return 'open_exploration';
 }

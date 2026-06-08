@@ -1,4 +1,4 @@
-export async function generateWithOpenAI({ apiKey, model, messages, responseSchema }) {
+export async function generateWithOpenAI({ apiKey, model, messages, responseSchema, onUsage }) {
   if (!apiKey) {
     return null;
   }
@@ -33,6 +33,9 @@ export async function generateWithOpenAI({ apiKey, model, messages, responseSche
   }
 
   const data = await response.json();
+  if (typeof onUsage === 'function' && data.usage) {
+    onUsage(data.usage);
+  }
   const text = data.output_text ?? data.output?.[0]?.content?.[0]?.text ?? '';
   return JSON.parse(text);
 }

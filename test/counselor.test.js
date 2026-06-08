@@ -1556,6 +1556,79 @@ test('createCounselingTurn sanitizes diagnostic wording from LLM output', async 
   assert.equal(result.assistantMessage.includes('약을 복용하세요'), false);
 });
 
+test('createCounselingTurn keeps sexual assault support rule-based even when LLM is configured', async () => {
+  const result = await createCounselingTurn({
+    messages: [
+      { role: 'user', content: '말하기 싫은데 성폭행 당했던 기억이 자꾸 떠올라요.' },
+      {
+        role: 'assistant',
+        content: '그 기억이 자꾸 떠오르면서 정말 힘드시겠어요. 어떤 느낌이 가장 크게 느껴지시나요?',
+      },
+      { role: 'user', content: '내가 잘못한 것 같아요.' },
+    ],
+    inventory: loadAihubInventory(),
+    llmClient: async () => ({
+      assistantMessage: '그 경험 때문에 자신을 탓하는 마음이 들 때 어떤 생각이 가장 크게 자리하나요?',
+      actions: [],
+      session: { title: '상담', focus: 'trauma', steps: [] },
+    }),
+  });
+
+  assert.equal(result.source, 'demo');
+  assert.match(result.assistantMessage, /네 잘못|책임|죄책감|1366/);
+});
+
+test('createCounselingTurn keeps passive death wish support rule-based after a protective contact is named', async () => {
+  const result = await createCounselingTurn({
+    messages: [
+      { role: 'user', content: '요즘 아무것도 하기 싫고 계속 누워만 있어요.' },
+      {
+        role: 'assistant',
+        content: '무기력한 상태가 이어져 많이 힘들겠어요. 몸과 마음에서는 어떤 반응이 있나요?',
+      },
+      { role: 'user', content: '그냥 사라지고 싶다는 생각이 자꾸 들어요. 죽겠다는 건 아닌데요.' },
+      {
+        role: 'assistant',
+        content: '그 말을 가볍게 넘기지 않겠습니다. 지금 혼자인지, 연락할 사람이 있는지부터 확인하고 싶어요.',
+      },
+      { role: 'user', content: '혼자는 아니고 동생한테 연락할 수 있어요.' },
+    ],
+    inventory: loadAihubInventory(),
+    llmClient: async () => ({
+      assistantMessage: '동생에게 연락할 수 있다는 점에서 연결이 있네요. 어떤 영향을 주나요? 더 느껴지는 점이 있을까요?',
+      actions: [],
+      session: { title: '상담', focus: 'support', steps: [] },
+    }),
+  });
+
+  assert.equal(result.source, 'demo');
+  assert.match(result.assistantMessage, /동생|연락|혼자|덜 위험|같이/);
+  assert.equal((result.assistantMessage.match(/[?？]/g) ?? []).length <= 1, true);
+});
+
+test('createCounselingTurn keeps manic activation support rule-based even when LLM is configured', async () => {
+  const result = await createCounselingTurn({
+    messages: [
+      { role: 'user', content: '3일째 잠을 안 자도 힘이 넘치고 갑자기 돈을 많이 쓰고 있어요.' },
+      {
+        role: 'assistant',
+        content: '몸과 마음 상태에 대해 더 말씀해 주실 수 있나요?',
+      },
+      { role: 'user', content: '의사는 싫고 난 그냥 지금 좋다고요.' },
+    ],
+    inventory: loadAihubInventory(),
+    llmClient: async () => ({
+      assistantMessage: '지금 즐거움이나 좋았던 점에 대해서 조금 더 이야기해 주실 수 있을까요?',
+      actions: [],
+      session: { title: '상담', focus: 'mood', steps: [] },
+    }),
+  });
+
+  assert.equal(result.source, 'demo');
+  assert.match(result.assistantMessage, /의사|싫|지금 좋|논쟁|잠|돈|결정|속도/);
+  assert.doesNotMatch(result.assistantMessage, /좋았던 점|더 이야기/);
+});
+
 test('createCounselingTurn limits LLM output to one question in ordinary counseling', async () => {
   const result = await createCounselingTurn({
     messages: [{ role: 'user', content: '요즘 불안하고 잠을 잘 못 자요.' }],

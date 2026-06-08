@@ -36,8 +36,11 @@ test('createPrivateRuntimePackage copies only validated private runtime files', 
   assert.match(readme + guide, /USB는 실행 매체가 아니라 파일 전달 매체/);
   assert.match(linkingGuide, /GitHub 코드와 USB 비공개 파일 연결 방법/);
   assert.match(linkingGuide, /Windows PC 준비물/);
+  assert.match(linkingGuide, /https:\/\/nodejs\.org\/en\/download/);
+  assert.match(linkingGuide, /https:\/\/platform\.openai\.com\/api-keys/);
   assert.match(linkingGuide, /PowerShell/);
   assert.match(linkingGuide, /\.env\.txt/);
+  assert.match(linkingGuide, /Ctrl\+C/);
   assert.match(linkingGuide, /git clone https:\/\/github\.com\/KIMGM535\/medical-data-analysis-project\.git/);
   assert.match(linkingGuide, /app_data\/aihub-rag-index\.deploy\.json/);
   assert.doesNotMatch(copiedIndex + envTemplate, /내담자\s*:|상담사\s*:|resource_|label_|api_download|01\.원천데이터|02\.라벨링데이터|\.txt"/);
