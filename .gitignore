@@ -205,3 +205,21 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Node / local app
+node_modules/
+.DS_Store
+app_data/
+aihub_71806/
+private_runtime_package/
+
+# Local AIHub login/session artifacts and downloaded binaries
+aihub_71806/cookies*.txt
+aihub_71806/page_with_cookies.html
+aihub_71806/diagnostics/
+aihub_71806/final_outputs/
+aihub_71806/api_download/
+aihub_71806/**/*.zip
+aihub_71806/**/*.tar
+aihub_71806/**/*headers.txt
+aihub_71806/public_files/*.hwp

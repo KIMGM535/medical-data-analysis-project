@@ -1,0 +1,21 @@
+[Unit]
+Description=Psychological Counseling AI
+After=network.target
+
+[Service]
+Type=simple
+User=psychai
+Group=psychai
+WorkingDirectory=/opt/psych-ai/current
+EnvironmentFile=/opt/psych-ai/.env
+ExecStart=/usr/bin/node src/server.js
+Restart=always
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+ReadWritePaths=/opt/psych-ai
+
+[Install]
+WantedBy=multi-user.target

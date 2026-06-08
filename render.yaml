@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: psychological-counseling-ai
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node src/server.js
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: OPENAI_MODEL
+        value: gpt-4.1-mini
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: AIHUB_API_KEY
+        sync: false
