@@ -19,6 +19,7 @@ test('createPrivateRuntimePackage copies only validated private runtime files', 
     '.env.template',
     'README-USB.md',
     'app_data/aihub-rag-index.deploy.json',
+    'docs/after-download-windows-manual.md',
     'checks/verification-commands.txt',
     'docs/github-code-linking.md',
     'docs/presentation-pc-setup.md',
@@ -29,6 +30,7 @@ test('createPrivateRuntimePackage copies only validated private runtime files', 
   const readme = fs.readFileSync(path.join(outputDir, 'README-USB.md'), 'utf8');
   const guide = fs.readFileSync(path.join(outputDir, 'docs', 'presentation-pc-setup.md'), 'utf8');
   const linkingGuide = fs.readFileSync(path.join(outputDir, 'docs', 'github-code-linking.md'), 'utf8');
+  const afterDownloadGuide = fs.readFileSync(path.join(outputDir, 'docs', 'after-download-windows-manual.md'), 'utf8');
 
   assert.match(envTemplate, /AIHUB_RAG_INDEX_PATH=app_data\/aihub-rag-index\.deploy\.json/);
   assert.match(envTemplate, /HOST=127\.0\.0\.1/);
@@ -43,6 +45,12 @@ test('createPrivateRuntimePackage copies only validated private runtime files', 
   assert.match(linkingGuide, /Ctrl\+C/);
   assert.match(linkingGuide, /git clone https:\/\/github\.com\/KIMGM535\/medical-data-analysis-project\.git/);
   assert.match(linkingGuide, /app_data\/aihub-rag-index\.deploy\.json/);
+  assert.match(afterDownloadGuide, /GitHub ZIP과 비공개 패키지 ZIP을 이미 받은 뒤/);
+  assert.match(afterDownloadGuide, /medical-data-analysis-project-main/);
+  assert.match(afterDownloadGuide, /psych-ai-private-runtime-package\.zip/);
+  assert.match(afterDownloadGuide, /node src\/deploymentPreflight\.js/);
+  assert.match(afterDownloadGuide, /node src\/server\.js/);
+  assert.match(afterDownloadGuide, /http:\/\/localhost:5173/);
   assert.doesNotMatch(copiedIndex + envTemplate, /내담자\s*:|상담사\s*:|resource_|label_|api_download|01\.원천데이터|02\.라벨링데이터|\.txt"/);
 });
 
