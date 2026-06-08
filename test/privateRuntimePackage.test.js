@@ -20,6 +20,7 @@ test('createPrivateRuntimePackage copies only validated private runtime files', 
     'README-USB.md',
     'app_data/aihub-rag-index.deploy.json',
     'checks/verification-commands.txt',
+    'docs/github-code-linking.md',
     'docs/presentation-pc-setup.md',
   ].sort());
 
@@ -27,11 +28,15 @@ test('createPrivateRuntimePackage copies only validated private runtime files', 
   const envTemplate = fs.readFileSync(path.join(outputDir, '.env.template'), 'utf8');
   const readme = fs.readFileSync(path.join(outputDir, 'README-USB.md'), 'utf8');
   const guide = fs.readFileSync(path.join(outputDir, 'docs', 'presentation-pc-setup.md'), 'utf8');
+  const linkingGuide = fs.readFileSync(path.join(outputDir, 'docs', 'github-code-linking.md'), 'utf8');
 
   assert.match(envTemplate, /AIHUB_RAG_INDEX_PATH=app_data\/aihub-rag-index\.deploy\.json/);
   assert.match(envTemplate, /HOST=127\.0\.0\.1/);
   assert.doesNotMatch(envTemplate, /sk-[A-Za-z0-9]/);
   assert.match(readme + guide, /USB는 실행 매체가 아니라 파일 전달 매체/);
+  assert.match(linkingGuide, /GitHub 코드와 USB 비공개 파일 연결 방법/);
+  assert.match(linkingGuide, /git clone https:\/\/github\.com\/KIMGM535\/medical-data-analysis-project\.git/);
+  assert.match(linkingGuide, /app_data\/aihub-rag-index\.deploy\.json/);
   assert.doesNotMatch(copiedIndex + envTemplate, /내담자\s*:|상담사\s*:|resource_|label_|api_download|01\.원천데이터|02\.라벨링데이터|\.txt"/);
 });
 
